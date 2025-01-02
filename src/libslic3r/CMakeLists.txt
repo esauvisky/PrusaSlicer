@@ -445,13 +445,14 @@ if (SLIC3R_STATIC)
     set(CGAL_Boost_USE_STATIC_LIBS ON CACHE BOOL "" FORCE)
 endif ()
 set(CGAL_DO_NOT_WARN_ABOUT_CMAKE_BUILD_TYPE ON CACHE BOOL "" FORCE)
+set(CGAL_WITH_GMPXX OFF CACHE BOOL "" FORCE)
 
 cmake_policy(PUSH)
 cmake_policy(SET CMP0011 NEW)
 find_package(CGAL REQUIRED)
 cmake_policy(POP)
 
-add_library(libslic3r_cgal STATIC 
+add_library(libslic3r_cgal STATIC
     CutSurface.hpp CutSurface.cpp
     Geometry/VoronoiUtilsCgal.hpp Geometry/VoronoiUtilsCgal.cpp
     IntersectionPoints.hpp IntersectionPoints.cpp
@@ -485,7 +486,8 @@ endif ()
 
 encoding_check(libslic3r)
 
-target_compile_definitions(libslic3r PUBLIC -DUSE_TBB -DTBB_USE_CAPTURED_EXCEPTION=0)
+target_compile_definitions(libslic3r PUBLIC -DUSE_TBB -DTBB_USE_CAPTURED_EXCEPTION=0 -DBOOST_MP_DISABLE_FLOAT128 -DBOOST_NO_TYPE_TRAITS_HPP -DCGAL_DO_NOT_USE_BOOST_MP)
+target_compile_definitions(libslic3r_cgal PUBLIC -DBOOST_MP_DISABLE_FLOAT128 -DBOOST_NO_TYPE_TRAITS_HPP -DCGAL_DO_NOT_USE_BOOST_MP)
 target_include_directories(libslic3r PRIVATE ${CMAKE_CURRENT_SOURCE_DIR} PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(libslic3r PUBLIC ${EXPAT_INCLUDE_DIRS})
 
@@ -515,7 +517,7 @@ target_link_libraries(libslic3r
     )
 
 if (APPLE)
-    # TODO: we need to fix notarization with the separate shared library
+    # This is not needed but it's safe to be there
     target_link_libraries(libslic3r OCCTWrapper)
 endif ()
 
