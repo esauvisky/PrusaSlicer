@@ -78,11 +78,11 @@ if (UNIX)
 endif ()
 
 if(APPLE)
-    set(_boost_flags 
+    set(_boost_flags
         "cflags=-fPIC -mmacosx-version-min=${DEP_OSX_TARGET};"
         "cxxflags=-fPIC -mmacosx-version-min=${DEP_OSX_TARGET};"
         "mflags=-fPIC -mmacosx-version-min=${DEP_OSX_TARGET};"
-        "mmflags=-fPIC -mmacosx-version-min=${DEP_OSX_TARGET}") 
+        "mmflags=-fPIC -mmacosx-version-min=${DEP_OSX_TARGET}")
 endif()
 
 set(_boost_variants "")
@@ -137,7 +137,7 @@ endif ()
 
 ExternalProject_Add(
     dep_Boost
-    URL "https://boostorg.jfrog.io/artifactory/main/release/1.78.0/source/boost_1_78_0.zip"
+    URL "https://github.com/bambulab/boost/releases/download/1.78.0/boost_1_78_0.zip"
     URL_HASH SHA256=f22143b5528e081123c3c5ed437e92f648fe69748e95fa6e2bd41484e2986cc3
     DOWNLOAD_DIR ${DEP_DOWNLOAD_DIR}/Boost
     CONFIGURE_COMMAND "${_bootstrap_cmd}"
